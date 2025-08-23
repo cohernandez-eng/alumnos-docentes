@@ -1,0 +1,47 @@
+
+<?php
+require_once '../models/Alumno.php';
+
+class AlumnoController {
+    public function index() {
+        $alumno = new Alumno();
+        $alumnos = $alumno->getAll();
+        
+        header('Content-Type: application/json');
+        echo json_encode($alumnos);
+    }
+
+    public function create($data) {
+        $alumno = new Alumno();
+        $alumno->nombre = $data['nombre'];
+        $alumno->edad = $data['edad'];
+        
+        $result = $alumno->create();
+        
+        header('Content-Type: application/json');
+        echo json_encode(["success" => $result]);
+    }
+
+    public function update($id, $data) {
+        $alumno = new Alumno();
+        $alumno->id = $id;
+        $alumno->nombre = $data['nombre'];
+        $alumno->edad = $data['edad'];
+        
+        $result = $alumno->update();
+        
+        header('Content-Type: application/json');
+        echo json_encode(["success" => $result]);
+    }
+
+    public function delete($id) {
+        $alumno = new Alumno();
+        $alumno->id = $id;
+        
+        $result = $alumno->delete();
+        
+        header('Content-Type: application/json');
+        echo json_encode(["success" => $result]);
+    }
+}
+?>

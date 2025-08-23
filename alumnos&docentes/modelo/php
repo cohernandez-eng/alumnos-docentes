@@ -1,0 +1,57 @@
+
+<?php
+require_once 'config/database.php';
+
+class Docente {
+    private $conn;
+    private $table = 'docentes';
+
+    public $id;
+    public $nombre;
+    public $materia;
+
+    public function __construct() {
+        $database = new Database();
+        $this->conn = $database->conn;
+    }
+
+    public function getAll() {
+        $sql = "SELECT * FROM " . $this->table;
+        $result = $this->conn->query($sql);
+        $rows = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        
+        return $rows;
+    }
+
+    public function create() {
+        $nombre = $this->conn->real_escape_string($this->nombre);
+        $materia = $this->conn->real_escape_string($this->materia);
+        
+        $sql = "INSERT INTO " . $this->table . " (nombre, materia) VALUES ('$nombre', '$materia')";
+        $this->conn->query($sql);
+        
+        return $this->conn->affected_rows > 0;
+    }
+
+    public function update() {
+        $nombre = $this->conn->real_escape_string($this->nombre);
+        $materia = $this->conn->real_escape_string($this->materia);
+        
+        $sql = "UPDATE " . $this->table . " SET nombre='$nombre', materia='$materia' WHERE id=$this->id";
+        $this->conn->query($sql);
+        
+        return $this->conn->affected_rows > 0;
+    }
+
+    public function delete() {
+        $sql = "DELETE FROM " . $this->table . " WHERE id=$this->id";
+        $this->conn->query($sql);
+        
+        return $this->conn->affected_rows > 0;
+    }
+}
+?>
